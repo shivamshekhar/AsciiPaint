@@ -53,6 +53,7 @@ int paintcolormap[20][60]=
                             {15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15}
 
                         };
+char fileopened[100] = "none";
 int main()
 {
     HANDLE in,out;
@@ -454,6 +455,9 @@ void clear()
             paintcolormap[i][j]=15;
         }
     }
+    //memset(fileopened, '\0', sizeof(fileopened));
+    strcpy(fileopened,"none");
+    printtitle();
     updatescreen();
 }
 //
@@ -503,6 +507,7 @@ void loadimage()
 {
     FILE *savefile;
     char filename[100];
+    int i;
     system("cls");
     system("dir *.aimg");
     printf("Filename of file to be opened: ");
@@ -520,6 +525,10 @@ void loadimage()
         fread(paintareamap,sizeof(int),1200,savefile);
         fread(paintcolormap,sizeof(int),1200,savefile);
     }
+
+    for(i=0;filename[i]!='\0';i++)
+        fileopened[i] = filename[i];
+    fileopened[i] = '\0';
     fclose(savefile);
 }
 //
@@ -540,6 +549,7 @@ void tempload()
         fread(paintareamap,sizeof(int),1200,savefile);
         fread(paintcolormap,sizeof(int),1200,savefile);
     }
+
     fclose(savefile);
 }
 //
@@ -548,9 +558,17 @@ void printtitle()
     COORD titlepos={45,24};
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),titlepos);
     printf("Written by: Shivam Shekhar");
+    titlepos.X=10;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),titlepos);
+    printf("                               ");
+    titlepos.X=10;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),titlepos);
+    printf("File opened: ");
+    printf("%s", fileopened);
     titlepos.X=0;
     titlepos.Y=0;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),titlepos);
+
 }
 //
 void help()
