@@ -556,15 +556,17 @@ void tempload()
 void printtitle()
 {
     COORD titlepos={45,24};
+
+    titlepos.X=0;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),titlepos);
-    printf("Written by: Shivam Shekhar");
-    titlepos.X=10;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),titlepos);
-    printf("                               ");
+    printf("                                                                             ");
     titlepos.X=10;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),titlepos);
     printf("File opened: ");
     printf("%s", fileopened);
+    titlepos.X=45;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),titlepos);
+    printf("Written by: Shivam Shekhar");
     titlepos.X=0;
     titlepos.Y=0;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),titlepos);
