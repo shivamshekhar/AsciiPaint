@@ -63,6 +63,7 @@ int main()
     CHAR_INFO paintarea[1200];
     int i,j,x,brush=219,brushcol=15,autofillX=0,autofillY=0;
     //
+    SetConsoleTitle("Ascii Paint!");
     in=GetStdHandle(STD_INPUT_HANDLE);
     out=GetStdHandle(STD_OUTPUT_HANDLE);
     GetConsoleScreenBufferInfo(in,&scrinfo);
