@@ -268,6 +268,17 @@ int main()
                         printtitle();
                         //undo();
                     }
+                    if(input.Event.MouseEvent.dwMousePosition.X>50 && input.Event.MouseEvent.dwMousePosition.X<63)
+                    {
+                        saveastext();
+                        system("cls");
+                        printpalette();
+                        printbrushpalette();
+                        printmenu();
+                        printborder(62,22,paintareapos,15);
+                        updatescreen();
+                        printtitle();
+                    }
                 }
             }
         }
@@ -373,9 +384,9 @@ void printbrushpalette()
 //
 void printmenu()
 {
-    char str1[5]="Save",str2[5]="Load",str3[6]="Clear", str4[5]="Help", str5[9]="Autofill",str6[5]="Undo";
+    char str1[5]="Save",str2[5]="Load",str3[6]="Clear", str4[5]="Help", str5[9]="Autofill",str6[5]="Undo", str7[13] = "Save as Text";
     int i;
-    CHAR_INFO save[4],load[4],clear[5],help[4],autofill[8],undo[4];
+    CHAR_INFO save[4],load[4],clear[5],help[4],autofill[8],undo[4],savetext[12];
     COORD sz={4,1},zerozero={0,0};
     SMALL_RECT rect={10,1,14,1};
     for(i=0;i<4;i++)
@@ -399,6 +410,11 @@ void printmenu()
         autofill[i].Char.AsciiChar=str5[i];
         autofill[i].Attributes=143;
     }
+    for(i=0;i<12;i++)
+    {
+        savetext[i].Char.AsciiChar = str7[i];
+        savetext[i].Attributes=143;
+    }
     WriteConsoleOutput(GetStdHandle(STD_OUTPUT_HANDLE),save,sz,zerozero,&rect);
     rect.Left=16;
     rect.Right=20;
@@ -419,6 +435,11 @@ void printmenu()
     rect.Left=45;
     rect.Right=49;
     WriteConsoleOutput(GetStdHandle(STD_OUTPUT_HANDLE),undo,sz,zerozero,&rect);
+    sz.X=12;
+    rect.Left=51;
+    rect.Right=63;
+    WriteConsoleOutput(GetStdHandle(STD_OUTPUT_HANDLE),savetext,sz,zerozero,&rect);
+
 }
 //
 void clear()
@@ -557,4 +578,26 @@ void autofill(int x,int y,int brushcol,int brush,int targetcol,int targetbrush,i
         }
     }
     updatescreen();
+}
+//
+void saveastext()
+{
+    int i,j;
+    FILE *savefile;
+    char filename[100];
+    system("cls");
+    printf("filename(without spaces): ");
+    scanf("%s",&filename);
+    strcat(filename,".txt");
+    savefile=fopen(filename,"w");
+    for(i=0;i<20;i++)
+    {
+        for(j=0;j<60;j++)
+            fprintf(savefile,"%c",paintareamap[i][j]);
+        fprintf(savefile,"\n");
+
+    }//fwrite(paintareamap,sizeof(int),1200,savefile);
+    //fwrite(paintcolormap,sizeof(int),1200,savefile);
+    fclose(savefile);
+
 }
