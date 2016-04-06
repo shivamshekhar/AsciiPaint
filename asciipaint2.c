@@ -77,7 +77,38 @@ int main()
     {
         SetConsoleMode(in,ENABLE_PROCESSED_INPUT|ENABLE_MOUSE_INPUT);
         ReadConsoleInput(in,&input,1,&info);
-        if(input.EventType==MOUSE_EVENT)
+        if(input.EventType == KEY_EVENT && input.Event.KeyEvent.bKeyDown)
+        {
+            if(input.Event.KeyEvent.wVirtualKeyCode == VK_UP )
+            {
+                if(brushcol < 255)
+                    brushcol++;
+
+            }
+
+            else if(input.Event.KeyEvent.wVirtualKeyCode == VK_DOWN )
+            {
+                if(brushcol > 0)
+                    brushcol--;
+
+            }
+
+            else if(input.Event.KeyEvent.wVirtualKeyCode == VK_RIGHT )
+            {
+                if(brush < 255)
+                    brush++;
+
+            }
+
+            else if(input.Event.KeyEvent.wVirtualKeyCode == VK_LEFT )
+            {
+                if(brush > 0)
+                    brush--;
+
+            }
+            showbrush(brush,brushcol);
+        }
+        else if(input.EventType==MOUSE_EVENT)
         {
             if(input.Event.MouseEvent.dwButtonState==FROM_LEFT_1ST_BUTTON_PRESSED)
             {
@@ -282,6 +313,7 @@ int main()
                         printtitle();
                     }
                 }
+                showbrush(brush,brushcol);
             }
         }
     }
@@ -302,6 +334,7 @@ void help(void);
 void autofill(int,int,int,int,int,int,int);
 void tempsave(void);
 void tempload(void);
+void showbrush(int,int);
 //
 void printborder(int _length,int _width,COORD _coordinates,int _color)
 {
@@ -577,6 +610,7 @@ void help()
 {
     system("cls");
     printf("click '?' to choose a custom color or a custom brush\n\nclick %c to choose eraser\n\n",177);
+    printf("press UP or DOWN keys to change the brush color immediately and RIGHT and LEFT to change the brush\n\n");
     system("pause");
 }
 //
@@ -621,4 +655,14 @@ void saveastext()
     //fwrite(paintcolormap,sizeof(int),1200,savefile);
     fclose(savefile);
 
+}
+
+void showbrush(int brush, int brushcol)
+{
+    COORD showbrushpos = {4,12},zerozero = {0,0};
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),showbrushpos);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),brushcol);
+    printf("%c", brush);
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE),zerozero);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),15);
 }
